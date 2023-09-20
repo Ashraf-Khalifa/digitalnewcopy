@@ -33,13 +33,20 @@ class AuthController {
     // Generate a fixed OTP for demonstration purposes
     const otp = "123456";
 
-    // Send the OTP to the temporary token (temporary email)
-    // For demonstration purposes, I'll just log the OTP
-    console.log(`OTP for email ${temporaryToken}: ${otp}`);
+// Construct the user data to return
+const userData = {
+  email,
+  temporaryToken,
+};
 
-    // Return the temporary token in the response
-    return res.json({ message: "OTP Sent Successfully", temporaryToken });
-  }
+// Return a success message along with the user data
+return res.status(200).json({
+  data: userData,
+  success: true,
+  message: "OTP Sent Successfully",
+  errors: {},
+});
+}
 
   static async verifyOTP(req, res) {
     const { otp, temporaryToken } = req.body;
@@ -50,7 +57,19 @@ class AuthController {
       const email = temporaryTokens.get(temporaryToken);
       temporaryTokens.delete(temporaryToken);
 
-      return res.status(200).json({ message: "OTP verification successful", email });
+       // Construct the user data to return
+       const userData = {
+        email,
+        temporaryToken,
+      };
+
+      // Return a success message along with the user data
+      return res.status(200).json({
+        data: userData,
+        success: true,
+        message: "OTP verification successful",
+        errors: {},
+      });
     }
 
     return res.status(401).json({ message: "OTP verification failed" });

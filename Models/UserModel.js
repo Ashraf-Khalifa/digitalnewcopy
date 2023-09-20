@@ -3,11 +3,11 @@ const mysql = require("mysql");
 // Create a connection to the database
 const dbConnection = mysql.createConnection({
   host: "db-mysql-nyc1-44248-do-user-14618823-0.b.db.ondigitalocean.com",
-  port : "25060",
+  port: "25060",
   user: "doadmin",
   password: "123.123.",
   database: "defaultdb",
-  ssl: true
+  ssl: true,
 });
 
 dbConnection.connect((err) => {
@@ -34,10 +34,9 @@ class UserModel {
       SET token = ?
       WHERE email = ?
     `;
-  
+
     dbConnection.query(updateTokenQuery, [token, email], callback);
   }
-  
 
   static deleteUserById(userId, callback) {
     const deleteUserQuery = `
@@ -62,12 +61,9 @@ class UserModel {
       INSERT INTO users (photoUrl, fullName, number, gender, birthdate, nationality, city, password, email, token, verify)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
-  
+
     dbConnection.query(userInfoQuery, values, callback);
   }
-
-
-  }
-
+}
 
 module.exports = UserModel;
