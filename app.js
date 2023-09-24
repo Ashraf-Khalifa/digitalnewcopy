@@ -11,8 +11,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // Include and use your routes here
-const authRoutes = require("./routes/authRoutes");
-const userRoutes = require("./routes/userRoutes");
+const authRoutes = require("./Routes/authRoutes");
+const userRoutes = require("./Routes/userRoutes");
 const galleryRoutes = require("./Routes/galleryRoutes"); // Updated route for gallery
 const eventRoutes = require("./Routes/eventRoutes");
 const shopRoutes = require("./Routes/shopRoutes");
