@@ -11,14 +11,24 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // Include and use your routes here
-const authRoutes = require("./Routes/authRoutes");
-const userRoutes = require("./Routes/userRoutes");
+const authRoutes = require("./routes/authRoutes");
+const userRoutes = require("./routes/userRoutes");
+const galleryRoutes = require("./Routes/galleryRoutes"); // Updated route for gallery
+const eventRoutes = require("./Routes/eventRoutes");
+const shopRoutes = require("./Routes/shopRoutes");
+const privacyRoutes = require("./Routes/privacyRoutes");
+const termsRoutes = require("./Routes/termsRoutes");
 
 app.use("/auth", authRoutes);
 app.use("/user", userRoutes);
+app.use("/gallery", galleryRoutes); // Updated route for gallery
+app.use("/event", eventRoutes);
+app.use("/shop", shopRoutes);
+app.use("/privacy", privacyRoutes);
+app.use("/terms", termsRoutes);
 
 app.get("/", (req, res) => {
-  res.send({ message: "Awesome it works 🐻", my_env_var: process.env.MY_VAR });
+  res.send({ message: "Digital passport app", my_env_var: process.env.MY_VAR });
 });
 
 // Error handling middleware

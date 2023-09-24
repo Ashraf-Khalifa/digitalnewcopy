@@ -1,6 +1,5 @@
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
-const EmailModel = require("../Models/EmailModel");
 const UserModel = require("../Models/UserModel");
 
 // Store temporary tokens (temporary emails) in memory
