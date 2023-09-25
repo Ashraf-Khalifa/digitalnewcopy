@@ -1,6 +1,13 @@
 const EventModel = require("../Models/EventModel");
 const fs = require("fs");
 
+const events = [
+  { id: 1, title: 'Event 1', date: '2023-09-25', content: 'Event content 1' },
+  { id: 2, title: 'Event 2', date: '2023-09-26', content: 'Event content 2' },
+  // Add more events as needed
+];
+
+
 class EventController {
   static addEvent(req, res) {
     console.log("Received request to add an event.");
@@ -101,6 +108,93 @@ class EventController {
       });
     });
   }
+
+  static deleteEvent(req, res) {
+    const eventId = parseInt(req.params.eventId, 10);
+  
+    // Delete the event from the database
+    EventModel.deleteEvent(eventId, (err, result) => {
+      if (err) {
+        console.error("MySQL Error:", err);
+        return res.status(500).json({
+          data: null,
+          success: false,
+          errors: { message: "Error deleting event from the database" },
+        });
+      }
+  
+      if (result.affectedRows === 0) {
+        // No event found with the specified ID
+        return res.status(404).json({ message: 'Event not found' });
+      }
+  
+      console.log("Event deleted successfully");
+      res.status(200).json({ message: 'Event deleted successfully' });
+    });
+  }
+
+  static updateEvent(req, res) {
+    const eventId = parseInt(req.params.eventId, 10);
+    const { title, date, content } = req.body;
+    const image = req.file;
+  
+    // Check if the image is missing
+    if (!image) {
+      console.error("Image file is required");
+      return res.status(400).json({
+        data: null,
+        success: false,
+        errors: { message: "Image file is required" },
+      });
+    }
+  
+    // Define the file path to save the uploaded image
+    const imagePath = `uploads/${image.originalname}`;
+  
+    // Write the image to the server's file system
+    fs.writeFile(imagePath, image.buffer, (err) => {
+      if (err) {
+        console.error("Error saving image:", err);
+        return res.status(500).json({
+          data: null,
+          success: false,
+          errors: { message: "Error updating event" },
+        });
+      }
+  
+      // Update the event data in the database with the new image file path
+      EventModel.updateEvent(eventId, imagePath, title, date, content, (err, result) => {
+        if (err) {
+          console.error("MySQL Error:", err);
+          return res.status(500).json({
+            data: null,
+            success: false,
+            errors: { message: "Error updating event in the database" },
+          });
+        }
+  
+        if (result.affectedRows === 0) {
+          // No event found with the specified ID
+          return res.status(404).json({ message: 'Event not found' });
+        }
+  
+        console.log("Event updated successfully");
+        const eventData = {
+          title,
+          date,
+          content,
+          image_path: imagePath,
+        };
+        return res.status(200).json({
+          data: eventData,
+          success: true,
+          errors: {},
+        });
+      });
+    });
+  }
+  
+
 }
 
 module.exports = EventController;
