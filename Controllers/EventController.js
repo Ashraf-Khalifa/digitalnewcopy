@@ -108,6 +108,7 @@ class EventController {
 
   static deleteEvent(req, res) {
     const eventId = parseInt(req.params.eventId, 10);
+    const image_path = req.query.image_path;
   
     // Delete the event from the database
     EventModel.deleteEvent(eventId, (err, result) => {
@@ -124,6 +125,9 @@ class EventController {
         // No event found with the specified ID
         return res.status(404).json({ message: 'Event not found' });
       }
+  
+      // You can now also delete the associated image file using 'image_path'
+      // Make sure to handle this operation securely
   
       console.log("Event deleted successfully");
       res.status(200).json({ message: 'Event deleted successfully' });
