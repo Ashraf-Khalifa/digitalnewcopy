@@ -1,11 +1,6 @@
 const EventModel = require("../Models/EventModel");
 const fs = require("fs");
 
-const events = [
-  { id: 1, title: 'Event 1', date: '2023-09-25', content: 'Event content 1' },
-  { id: 2, title: 'Event 2', date: '2023-09-26', content: 'Event content 2' },
-  // Add more events as needed
-];
 
 
 class EventController {
@@ -69,6 +64,7 @@ class EventController {
     });
   }
 
+ 
   static getEvents(req, res) {
     EventModel.getEvents((err, results) => {
       if (err) {
@@ -92,6 +88,7 @@ class EventController {
 
       results.forEach((event) => {
         const eventDetails = {
+          id: event.id,
           title: event.title,
           date: event.date,
           content: event.content,

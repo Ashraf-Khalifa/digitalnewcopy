@@ -16,7 +16,7 @@ class EventModel {
 
   static getEvents(callback) {
     const selectEventsQuery = `
-      SELECT title, date, content, image_path
+      SELECT id, title, date, content, image_path
       FROM events
     `;
 
